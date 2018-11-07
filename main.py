@@ -1,168 +1,103 @@
 #!/usr/bin/env python3
 from time import sleep
-from classe import Robot
+from ClasseRobo import ClasseRobo
 
-r = Robot('B', 'A', 'C', '1', '2', '3', '4', 6.5, 2.7, 13.5)
+
+
+
+robo = ClasseRobo('A', 'B', 'C', '1', '2', '3', '4', 6, 2.7, 13)
 cores = ['unknown','black','blue','green','yellow','red','white','brown']
 
-r.direcoes = []
-r.cores = []
-r.coresAprendidas = {5:90,4:-90,3:0}
+#robo.direcoes = []
+#robo.cores = []
+#robo.cores_aprendidas = {5:90, 4:-90, 3:0}
+#robo.garra_ocupada = True
+#robo.volta_mapa = True
+#robo.mapa_simples = [4,5,4,3,4,5,5]
+
 while True:
+	robo.andarTempo(500, 500, 100)
+	robo.saindoPista()
 
-	r.andarTempo(500, 500, 100)
-	r.saindoPista()
-
-	#Pega boneco
-	if not r.garraOcupada:
-		if r.detecta():
-			r.modoAtaque()
-	# if contBoneco = 50 and not bonecoGarra:
-	# 	bonecoGarra = True
-	# 	r.abreGarra(-1000, 300)
-
-	#Pega Boneco Volta
-
-	# Achou Cor
-	if r.sensorE.value() not in [0, 1, 6, 7]:
-		# print("Teste",r.teste)
-		if not r.teste or r.obrigaTeste:
-			while not r.alinhaCor([r.sensorE.value()], 6, r.sensorE, r.sensorD, 200, 0, True):
+	if not robo.garra_ocupada:
+		if robo.detectaBoneco():
+			robo.modoAtaque()
+	
+	if robo.sensor_esquerdo.value() not in [0, 1, 6, 7]:
+		if not robo.teste or robo.obriga_teste:
+			while not robo.alinhaCor([robo.verificaCorSensor(robo.sensor_esquerdo)], 6, robo.sensor_esquerdo, robo.sensor_direito, 200, 0, True):
 				continue
-			r.andarTempo(400, 400, 700, True)
+			robo.andarTempo(400, 400, 700, True)
 
-		if r.corAtual not in [int(key) for key in r.coresAprendidas.keys()]:
-			r.aprendendoCor = True
+		if robo.cor_atual not in [int(key) for key in robo.cores_aprendidas.keys()]:
+			robo.aprendendo_cor = True
 
-			for direcao in r.direcoes:
-				# print("Direcao", direcao)
-				if direcao != 0: #Girar 0 de erro
-					r.girar(direcao)
-				r.saindoCor()
-				r.obrigaTeste = False
-				r.deadEnd(direcao)
+			for direcao in robo.direcoes:
+				if direcao != 0:
+					robo.girarRobo(direcao)
+				robo.saindoCor()
+				robo.obrigaTeste = False
+				robo.deadEnd(direcao)
 
-				r.andarTempo(400, 400, 700, True)
+				robo.andarTempo(400, 400, 700, True)
 
-				if r.aprendendoCor:
-					ajusteGiro = direcao
+				if robo.aprendendoCor:
+					ajuste_giro = direcao
 					if direcao == 0:
-						ajusteGiro = 180
-					r.girar(ajusteGiro)
+						ajuste_giro = 180
+					robo.girarRobo(ajuste_giro)
 				else:
-					print("Teste True")
 					r.teste = True
 					break
 		else:
-			# print("Cores Arepndida", r.coresAprendidas)
-			# print(r.corAtual, r.voltaMapa)
-			if r.corAtual == 3 and not r.voltaMapa:
-				r.andarTempo(-200, -200, 750, True)
-				if r.verificaEntradaPraca():
-					#r.bateParede()
-					# Luiz
-					r.modoPraca(True)
-					#############
-					r.voltaPraca()
+			if robo.cor_atual == 5 and not robo.volta_mapa:
+				robo.andarTempo(-400, -400, 800, True)
+				if robo.verificaEntradaPraca():
+					robo.bateParede()
+					robo.modoPraca(robo.garra_ocupada)
+					robo.voltaPraca()
 				else:
-					direcao = r.coresAprendidas[r.corAtual]
+					direcao = robo.cores_aprendidas[robo.cor_atual]
 					if direcao != 0:
-						r.girar(direcao)
-					r.aprendeMapa(r.corAtual)
-					r.saindoCor()
-			else:
-				# print("Aprende Mapa")
-				r.aprendeMapa(r.corAtual)
-				if r.verificaMapa():
-					r.reverteDirecao()
-					r.girar(180)
-					r.saindoCor()
-				else:
-					direcao = r.coresAprendidas[r.corAtual]
-					if direcao != 0:
-						r.girar(direcao)
-					r.saindoCor()
+						robo.girarRobo(direcao)
+					robo.aprendeMapa(robo.cor_atual)
+					robo.saindoCor()
 	 		
 		
-
-	if r.sensorD.value() not in [0, 1, 6, 7]:
-		# print("Teste",r.teste)
-		if not r.teste or r.obrigaTeste:
-			while not r.alinhaCor([r.sensorD.value()], 6, r.sensorD, r.sensorE, 0, 200, True):
+	if robo.sensor_direito.value() not in [0, 1, 6, 7]:
+		if not robo.teste or robo.obrigaTeste:
+			while not robo.alinhaCor([robo.sensor_direito.value()], 6, robo.sensor_direito, robo.sensor_esquerdo, 0, 200, True):
 				continue
-			r.andarTempo(400, 400, 700, True)
+			robo.andarTempo(400, 400, 700, True)
 
-		if r.corAtual not in [int(key) for key in r.coresAprendidas.keys()]:
-			r.aprendendoCor = True
-			for direcao in r.direcoes:
-				# print("Direcao", direcao)
-				if direcao != 0: #Girar 0 de erro
-					r.girar(direcao)
-				r.saindoCor()
-				r.obrigaTeste = False
-				r.deadEnd(direcao)
+		if robo.cor_atual not in [int(key) for key in robo.cores_aprendidas.keys()]:
+			robo.aprendendo_cor = True
+			for direcao in robo.direcoes:
+				if direcao != 0:
+					robo.girarRobo(direcao)
+				robo.saindoCor()
+				robo.obrigaTeste = False
+				robo.deadEnd(direcao)
 
-				r.andarTempo(400, 400, 700, True)
-				# print("Aprendeu COr")
-				if r.aprendendoCor:
-					ajusteGiro = direcao
+				robo.andarTempo(400, 400, 700, True)
+				if robo.aprendendo_cor:
+					ajuste_giro = direcao
 					if direcao == 0:
-						ajusteGiro = 180
-					r.girar(ajusteGiro)
+						ajuste_giro = 180
+					robo.girarRobo(ajuste_giro)
 				else:
-					# print("Teste True")
-					r.teste = True
+					robo.teste = True
 					break
 		else:
-			# print("Cores Arepndida", r.coresAprendidas)
-			# print(r.corAtual, r.voltaMapa)
-			if r.corAtual == 3 and not r.voltaMapa:
-				r.andarTempo(-200, -200, 750, True)
-				if r.verificaEntradaPraca():
-					r.bateParede()
-					# r.girar(180)
-					# Luiz
-					r.modoPraca(r.garraOcupada)
-					#############
-					r.voltaPraca()
+			if robo.cor_atual == 5 and not robo.volta_mapa:
+				robo.andarTempo(-400, -400, 800, True)
+				if robo.verificaEntradaPraca():
+					robo.bateParede()
+					robo.modoPraca(robo.garra_ocupada)
+					robo.voltaPraca()
 				else:
-					direcao = r.coresAprendidas[r.corAtual]
+					direcao = robo.cores_aprendidas[robo.cor_atual]
 					if direcao != 0:
-						r.girar(direcao)
-					r.aprendeMapa(r.corAtual)
-					r.saindoCor()
-			else:
-				# print("Aprende Mapa")
-				r.aprendeMapa(r.corAtual)
-				if r.verificaMapa():
-					r.reverteDirecao()
-					r.girar(180)
-					r.saindoCor()
-				else:
-					direcao = r.coresAprendidas[r.corAtual]
-					if direcao != 0:
-						r.girar(direcao)
-					r.saindoCor()
-	#Fim Achou Cor
-
-# alinha cor(Feito)
-# HSV->RGB && RGB->HSV (Feito)
-# verifa com o sensor do meio (Feito)
-# aprendendoCor  = True (Feito)
-# testas as direções (Feito)
-# teste de deadend (Feito)
-# Vola deadEnd n tem teste de deadEnd(Feito)
-# Ruido infinito(Feito)
-# alinhaCor Branco(Feito)
-# entrar Praça (Feito)
-# inverter direções (Feito)
-# volta (Feito)
-# A mesma cor seguida duas vezes(Feito)
-
-# verificar bola preta / largar boneco(Luiz)
-# sair Praça(Luiz)
-
-# mapa pista (Feito)
-# Guarda todos de um lado
-# Priorizar pegar boneco na no primeiro q for visto
-# Merge dos códigos)
+						robo.girarRobo(direcao)
+					robo.aprendeMapa(robo.cor_atual)
+					robo.saindoCor()
