@@ -28,6 +28,8 @@ class ClasseRobo():
 		self.razao_roda = self.odometria(distancia_rodas, raio_roda)
 		self.razao_andar = 2 * math.pi * raio_roda
 
+		self.printCores = ["none", "black", "blue", "green", "yellow", "red", "white"]
+
 		self.garra_ocupada = False
 
 		self.cor_atual = None
@@ -44,40 +46,40 @@ class ClasseRobo():
 		self.teste = False
 		self.obriga_teste = False
 
-		self.inferior_vermelho_no_vermelho = 179
-		self.superior_vermelho_no_vermelho = 252
-		self.inferior_verde_no_vermelho = 260
-		self.superior_verde_no_vermelho = 511
-		self.inferior_azul_no_vermelho = 169
-		self.superior_azul_no_vermelho = 278
+		self.inferior_vermelho_no_vermelho = 65
+		self.superior_vermelho_no_vermelho = 185
+		self.inferior_verde_no_vermelho = 0
+		self.superior_verde_no_vermelho = 67
+		self.inferior_azul_no_vermelho = 0
+		self.superior_azul_no_vermelho = 36
 
-		self.inferior_vermelho_no_branco = 268
-		self.superior_vermelho_no_branco = 335
-		self.inferior_verde_no_branco = 265
-		self.superior_verde_no_branco = 510
-		self.inferior_azul_no_branco = 171
-		self.superior_azul_no_branco = 282
+		self.inferior_vermelho_no_branco = 116
+		self.superior_vermelho_no_branco = 276
+		self.inferior_verde_no_branco = 65
+		self.superior_verde_no_branco = 369
+		self.inferior_azul_no_branco = 81
+		self.superior_azul_no_branco = 205
 
 		self.inferior_vermelho_no_azul = 0
-		self.superior_vermelho_no_azul = 0
-		self.inferior_verde_no_azul = 0
-		self.superior_verde_no_azul = 0
-		self.inferior_azul_no_azul = 0
-		self.superior_azul_no_azul = 0
+		self.superior_vermelho_no_azul = 59
+		self.inferior_verde_no_azul = 19
+		self.superior_verde_no_azul = 201
+		self.inferior_azul_no_azul = 51
+		self.superior_azul_no_azul = 171
 
-		self.inferior_vermelho_no_verde = 15
-		self.superior_vermelho_no_verde = 46
-		self.inferior_verde_no_verde = 72
-		self.superior_verde_no_verde = 161
-		self.inferior_azul_no_verde = 17
-		self.superior_azul_no_verde = 42
+		self.inferior_vermelho_no_verde = 0
+		self.superior_vermelho_no_verde = 44
+		self.inferior_verde_no_verde = 0
+		self.superior_verde_no_verde = 107
+		self.inferior_azul_no_verde = 0
+		self.superior_azul_no_verde = 37
 		
-		self.inferior_vermelho_no_amarelo = 220
-		self.superior_vermelho_no_amarelo = 283
-		self.inferior_verde_no_amarelo = 126
-		self.superior_verde_no_amarelo = 263
-		self.inferior_azul_no_amarelo = 28
-		self.superior_azul_no_amarelo = 58
+		self.inferior_vermelho_no_amarelo = 0
+		self.superior_vermelho_no_amarelo = 0
+		self.inferior_verde_no_amarelo = 0
+		self.superior_verde_no_amarelo = 0
+		self.inferior_azul_no_amarelo = 0
+		self.superior_azul_no_amarelo = 0
 
 		
 
@@ -300,7 +302,7 @@ class ClasseRobo():
 		if muda_cor:
 			self.cor_atual = cor
 
-		print(cor)
+		print("Vendo: ", print_cores[cor])
 		return cor
 
 
